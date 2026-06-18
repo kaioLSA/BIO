@@ -2,13 +2,10 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitType from "split-type";
 import { ArrowRight, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const MagicRings = dynamic(() => import("./MagicRings"), { ssr: false });
 
@@ -59,50 +56,9 @@ export function Hero() {
         ease: "back.out(1.5)"
       }, "-=0.5");
 
-    // Scroll-out — SAME on every screen size (no breakpoint branching, which was
-    // accidentally giving narrow windows / the phone a different, broken path).
-    // The hero stays PINNED while each part fades out with a small upward lift,
-    // in sequence. The trailing viewport is pulled up with a negative margin
-    // equal to the hero's REAL pixel height (measured) so it matches the 100dvh
-    // hero exactly — using "100vh" didn't match on mobile and caused overlap.
-    const lift = -70;
-    const heroHeight = containerRef.current?.offsetHeight ?? window.innerHeight;
-    gsap.set(containerRef.current, { marginBottom: -heroHeight });
-
-    const exitTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top top",
-        end: "+=110%",
-        scrub: true,
-        pin: true,
-        anticipatePin: 1,
-      },
-    });
-
-    exitTl
-      // logo uses the OUTER wrapper ringsExitRef — the intro owns the inner
-      // ringsWrapRef autoAlpha, so separate elements avoid a value clash.
-      .to(ringsExitRef.current, { autoAlpha: 0, y: lift, ease: "power2.in", duration: 0.3 }, 0)
-      .to(textsRef.current, { autoAlpha: 0, y: lift, ease: "power2.in", duration: 0.3 }, 0.36)
-      .to(buttonsRef.current, { autoAlpha: 0, y: lift, ease: "power2.in", duration: 0.3 }, 0.72);
-
-    // On mobile / slower loads, ScrollTrigger initializes before the layout has
-    // settled (web fonts, the dynamically-imported MagicRings), which left the
-    // pin miscalculated so the -margin wasn't absorbed and everything overlapped
-    // with no animation. Refresh once everything has finished loading.
-    const refresh = () => ScrollTrigger.refresh();
-    if (document.readyState !== "complete") window.addEventListener("load", refresh);
-    if (document.fonts) document.fonts.ready.then(refresh).catch(() => {});
-    const refreshTimer = window.setTimeout(refresh, 600);
-
     return () => {
       subtitleSplit.revert();
       descSplit.revert();
-      window.removeEventListener("load", refresh);
-      clearTimeout(refreshTimer);
-      exitTl.scrollTrigger?.kill();
-      exitTl.kill();
       tl.kill();
     };
   }, []);
