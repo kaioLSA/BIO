@@ -5,9 +5,6 @@ import gsap from "gsap";
 import SplitType from "split-type";
 import { ArrowRight, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import dynamic from "next/dynamic";
-
-const MagicRings = dynamic(() => import("./MagicRings"), { ssr: false });
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -73,41 +70,16 @@ export function Hero() {
         className="w-full max-w-3xl mx-auto flex flex-col items-center text-center gap-2"
       >
 
-        {/* Magic Rings + Logo */}
+        {/* Logo */}
         <div ref={ringsExitRef} className="w-full max-w-[480px] mb-2">
         <div
           ref={ringsWrapRef}
-          className="relative flex items-center justify-center w-full h-[260px] sm:h-[360px]"
+          className="relative flex items-center justify-center w-full py-12 sm:py-16"
         >
-          <div className="absolute inset-0 z-0">
-            <MagicRings
-              color="#00A3FF"
-              colorTwo="#06B6D4"
-              ringCount={6}
-              speed={1}
-              attenuation={10}
-              lineThickness={2}
-              baseRadius={0.35}
-              radiusStep={0.1}
-              scaleRate={0.1}
-              opacity={1}
-              blur={0}
-              noiseAmount={0.1}
-              rotation={0}
-              ringGap={1.5}
-              fadeIn={0.7}
-              fadeOut={0.5}
-              followMouse={true}
-              mouseInfluence={0.15}
-              hoverScale={1.1}
-              parallax={0.04}
-              clickBurst={true}
-            />
-          </div>
           <img
             src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/logo.png`}
             alt="Startsette"
-            className="relative z-10 h-10 sm:h-14 w-auto drop-shadow-[0_0_30px_rgba(0,163,255,0.9)]"
+            className="relative z-10 h-12 sm:h-16 w-auto drop-shadow-[0_0_40px_rgba(0,163,255,0.95)]"
           />
         </div>
         </div>
