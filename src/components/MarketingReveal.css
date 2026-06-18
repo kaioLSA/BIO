@@ -1,0 +1,17 @@
+.marketing-reveal {
+  margin: 0;
+  overflow: hidden;
+}
+
+.marketing-reveal-text {
+  display: inline-block;
+  font-size: clamp(3rem, 14vw, 16rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+.marketing-reveal .char {
+  display: inline-block;
+}
